@@ -1,0 +1,1304 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "b503855e-eeaf-41b5-ae69-957cd2c8e1a1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "ba082515-befc-49d4-92f5-5d996f3fea87",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df = pd.read_csv('cardata.csv')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "5d794866-ae97-49c8-80b5-8d4aeba389bc",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Car_Name</th>\n",
+       "      <th>Year</th>\n",
+       "      <th>Selling_Price</th>\n",
+       "      <th>Present_Price</th>\n",
+       "      <th>Kms_Driven</th>\n",
+       "      <th>Fuel_Type</th>\n",
+       "      <th>Seller_Type</th>\n",
+       "      <th>Transmission</th>\n",
+       "      <th>Owner</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>ritz</td>\n",
+       "      <td>2014</td>\n",
+       "      <td>3.35</td>\n",
+       "      <td>5.59</td>\n",
+       "      <td>27000</td>\n",
+       "      <td>Petrol</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>sx4</td>\n",
+       "      <td>2013</td>\n",
+       "      <td>4.75</td>\n",
+       "      <td>9.54</td>\n",
+       "      <td>43000</td>\n",
+       "      <td>Diesel</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>ciaz</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>7.25</td>\n",
+       "      <td>9.85</td>\n",
+       "      <td>6900</td>\n",
+       "      <td>Petrol</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>wagon r</td>\n",
+       "      <td>2011</td>\n",
+       "      <td>2.85</td>\n",
+       "      <td>4.15</td>\n",
+       "      <td>5200</td>\n",
+       "      <td>Petrol</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>swift</td>\n",
+       "      <td>2014</td>\n",
+       "      <td>4.60</td>\n",
+       "      <td>6.87</td>\n",
+       "      <td>42450</td>\n",
+       "      <td>Diesel</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  Car_Name  Year  Selling_Price  Present_Price  Kms_Driven Fuel_Type  \\\n",
+       "0     ritz  2014           3.35           5.59       27000    Petrol   \n",
+       "1      sx4  2013           4.75           9.54       43000    Diesel   \n",
+       "2     ciaz  2017           7.25           9.85        6900    Petrol   \n",
+       "3  wagon r  2011           2.85           4.15        5200    Petrol   \n",
+       "4    swift  2014           4.60           6.87       42450    Diesel   \n",
+       "\n",
+       "  Seller_Type Transmission  Owner  \n",
+       "0      Dealer       Manual      0  \n",
+       "1      Dealer       Manual      0  \n",
+       "2      Dealer       Manual      0  \n",
+       "3      Dealer       Manual      0  \n",
+       "4      Dealer       Manual      0  "
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "717e4928-2505-45dc-9e0c-14f5207f6017",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Owner\n",
+       "0    290\n",
+       "1     10\n",
+       "3      1\n",
+       "Name: count, dtype: int64"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['Owner'].value_counts()\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "77dae786-4138-44ab-8c8a-ae4a367f026e",
+   "metadata": {},
+   "source": [
+    "1. OneHotEncoding using Pandas"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "1faaa315-a285-48cc-a319-993ed179ff70",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Car_Name</th>\n",
+       "      <th>Year</th>\n",
+       "      <th>Selling_Price</th>\n",
+       "      <th>Present_Price</th>\n",
+       "      <th>Kms_Driven</th>\n",
+       "      <th>Seller_Type</th>\n",
+       "      <th>Transmission</th>\n",
+       "      <th>Fuel_Type_CNG</th>\n",
+       "      <th>Fuel_Type_Diesel</th>\n",
+       "      <th>Fuel_Type_Petrol</th>\n",
+       "      <th>Owner_0</th>\n",
+       "      <th>Owner_1</th>\n",
+       "      <th>Owner_3</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>ritz</td>\n",
+       "      <td>2014</td>\n",
+       "      <td>3.35</td>\n",
+       "      <td>5.59</td>\n",
+       "      <td>27000</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>sx4</td>\n",
+       "      <td>2013</td>\n",
+       "      <td>4.75</td>\n",
+       "      <td>9.54</td>\n",
+       "      <td>43000</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>ciaz</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>7.25</td>\n",
+       "      <td>9.85</td>\n",
+       "      <td>6900</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>wagon r</td>\n",
+       "      <td>2011</td>\n",
+       "      <td>2.85</td>\n",
+       "      <td>4.15</td>\n",
+       "      <td>5200</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>swift</td>\n",
+       "      <td>2014</td>\n",
+       "      <td>4.60</td>\n",
+       "      <td>6.87</td>\n",
+       "      <td>42450</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>296</th>\n",
+       "      <td>city</td>\n",
+       "      <td>2016</td>\n",
+       "      <td>9.50</td>\n",
+       "      <td>11.60</td>\n",
+       "      <td>33988</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>297</th>\n",
+       "      <td>brio</td>\n",
+       "      <td>2015</td>\n",
+       "      <td>4.00</td>\n",
+       "      <td>5.90</td>\n",
+       "      <td>60000</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>298</th>\n",
+       "      <td>city</td>\n",
+       "      <td>2009</td>\n",
+       "      <td>3.35</td>\n",
+       "      <td>11.00</td>\n",
+       "      <td>87934</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>299</th>\n",
+       "      <td>city</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>11.50</td>\n",
+       "      <td>12.50</td>\n",
+       "      <td>9000</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>300</th>\n",
+       "      <td>brio</td>\n",
+       "      <td>2016</td>\n",
+       "      <td>5.30</td>\n",
+       "      <td>5.90</td>\n",
+       "      <td>5464</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>301 rows × 13 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "    Car_Name  Year  Selling_Price  Present_Price  Kms_Driven Seller_Type  \\\n",
+       "0       ritz  2014           3.35           5.59       27000      Dealer   \n",
+       "1        sx4  2013           4.75           9.54       43000      Dealer   \n",
+       "2       ciaz  2017           7.25           9.85        6900      Dealer   \n",
+       "3    wagon r  2011           2.85           4.15        5200      Dealer   \n",
+       "4      swift  2014           4.60           6.87       42450      Dealer   \n",
+       "..       ...   ...            ...            ...         ...         ...   \n",
+       "296     city  2016           9.50          11.60       33988      Dealer   \n",
+       "297     brio  2015           4.00           5.90       60000      Dealer   \n",
+       "298     city  2009           3.35          11.00       87934      Dealer   \n",
+       "299     city  2017          11.50          12.50        9000      Dealer   \n",
+       "300     brio  2016           5.30           5.90        5464      Dealer   \n",
+       "\n",
+       "    Transmission  Fuel_Type_CNG  Fuel_Type_Diesel  Fuel_Type_Petrol  Owner_0  \\\n",
+       "0         Manual          False             False              True     True   \n",
+       "1         Manual          False              True             False     True   \n",
+       "2         Manual          False             False              True     True   \n",
+       "3         Manual          False             False              True     True   \n",
+       "4         Manual          False              True             False     True   \n",
+       "..           ...            ...               ...               ...      ...   \n",
+       "296       Manual          False              True             False     True   \n",
+       "297       Manual          False             False              True     True   \n",
+       "298       Manual          False             False              True     True   \n",
+       "299       Manual          False              True             False     True   \n",
+       "300       Manual          False             False              True     True   \n",
+       "\n",
+       "     Owner_1  Owner_3  \n",
+       "0      False    False  \n",
+       "1      False    False  \n",
+       "2      False    False  \n",
+       "3      False    False  \n",
+       "4      False    False  \n",
+       "..       ...      ...  \n",
+       "296    False    False  \n",
+       "297    False    False  \n",
+       "298    False    False  \n",
+       "299    False    False  \n",
+       "300    False    False  \n",
+       "\n",
+       "[301 rows x 13 columns]"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pd.get_dummies(df,columns=['Fuel_Type','Owner'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e1cb8fb9-e38e-4104-b350-dd4ae21d53e8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "2. K-1 OneHotEncoding"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "c07f21ba-bea8-471e-91bb-884e9360d40f",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Car_Name</th>\n",
+       "      <th>Year</th>\n",
+       "      <th>Selling_Price</th>\n",
+       "      <th>Present_Price</th>\n",
+       "      <th>Kms_Driven</th>\n",
+       "      <th>Seller_Type</th>\n",
+       "      <th>Transmission</th>\n",
+       "      <th>Fuel_Type_Diesel</th>\n",
+       "      <th>Fuel_Type_Petrol</th>\n",
+       "      <th>Owner_1</th>\n",
+       "      <th>Owner_3</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>ritz</td>\n",
+       "      <td>2014</td>\n",
+       "      <td>3.35</td>\n",
+       "      <td>5.59</td>\n",
+       "      <td>27000</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>sx4</td>\n",
+       "      <td>2013</td>\n",
+       "      <td>4.75</td>\n",
+       "      <td>9.54</td>\n",
+       "      <td>43000</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>ciaz</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>7.25</td>\n",
+       "      <td>9.85</td>\n",
+       "      <td>6900</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>wagon r</td>\n",
+       "      <td>2011</td>\n",
+       "      <td>2.85</td>\n",
+       "      <td>4.15</td>\n",
+       "      <td>5200</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>swift</td>\n",
+       "      <td>2014</td>\n",
+       "      <td>4.60</td>\n",
+       "      <td>6.87</td>\n",
+       "      <td>42450</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>296</th>\n",
+       "      <td>city</td>\n",
+       "      <td>2016</td>\n",
+       "      <td>9.50</td>\n",
+       "      <td>11.60</td>\n",
+       "      <td>33988</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>297</th>\n",
+       "      <td>brio</td>\n",
+       "      <td>2015</td>\n",
+       "      <td>4.00</td>\n",
+       "      <td>5.90</td>\n",
+       "      <td>60000</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>298</th>\n",
+       "      <td>city</td>\n",
+       "      <td>2009</td>\n",
+       "      <td>3.35</td>\n",
+       "      <td>11.00</td>\n",
+       "      <td>87934</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>299</th>\n",
+       "      <td>city</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>11.50</td>\n",
+       "      <td>12.50</td>\n",
+       "      <td>9000</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>300</th>\n",
+       "      <td>brio</td>\n",
+       "      <td>2016</td>\n",
+       "      <td>5.30</td>\n",
+       "      <td>5.90</td>\n",
+       "      <td>5464</td>\n",
+       "      <td>Dealer</td>\n",
+       "      <td>Manual</td>\n",
+       "      <td>False</td>\n",
+       "      <td>True</td>\n",
+       "      <td>False</td>\n",
+       "      <td>False</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>301 rows × 11 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "    Car_Name  Year  Selling_Price  Present_Price  Kms_Driven Seller_Type  \\\n",
+       "0       ritz  2014           3.35           5.59       27000      Dealer   \n",
+       "1        sx4  2013           4.75           9.54       43000      Dealer   \n",
+       "2       ciaz  2017           7.25           9.85        6900      Dealer   \n",
+       "3    wagon r  2011           2.85           4.15        5200      Dealer   \n",
+       "4      swift  2014           4.60           6.87       42450      Dealer   \n",
+       "..       ...   ...            ...            ...         ...         ...   \n",
+       "296     city  2016           9.50          11.60       33988      Dealer   \n",
+       "297     brio  2015           4.00           5.90       60000      Dealer   \n",
+       "298     city  2009           3.35          11.00       87934      Dealer   \n",
+       "299     city  2017          11.50          12.50        9000      Dealer   \n",
+       "300     brio  2016           5.30           5.90        5464      Dealer   \n",
+       "\n",
+       "    Transmission  Fuel_Type_Diesel  Fuel_Type_Petrol  Owner_1  Owner_3  \n",
+       "0         Manual             False              True    False    False  \n",
+       "1         Manual              True             False    False    False  \n",
+       "2         Manual             False              True    False    False  \n",
+       "3         Manual             False              True    False    False  \n",
+       "4         Manual              True             False    False    False  \n",
+       "..           ...               ...               ...      ...      ...  \n",
+       "296       Manual              True             False    False    False  \n",
+       "297       Manual             False              True    False    False  \n",
+       "298       Manual             False              True    False    False  \n",
+       "299       Manual              True             False    False    False  \n",
+       "300       Manual             False              True    False    False  \n",
+       "\n",
+       "[301 rows x 11 columns]"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pd.get_dummies(df,columns=['Fuel_Type','Owner'],drop_first=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fb8fccd6-14bc-428c-a978-588a098cc7a5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "3. OneHotEncoding using Sklearn"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "ebcff298-6c81-4031-b4bb-aba0463992c6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.model_selection import train_test_split\n",
+    "X_train,X_test,y_train,y_test = train_test_split(df.iloc[:,0:4],df.iloc[:,-1],test_size=0.2,random_state=2)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "884385e3-95f1-4fe5-a897-8675ca1f618e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Car_Name</th>\n",
+       "      <th>Year</th>\n",
+       "      <th>Selling_Price</th>\n",
+       "      <th>Present_Price</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>235</th>\n",
+       "      <td>verna</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>9.10</td>\n",
+       "      <td>9.40</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>106</th>\n",
+       "      <td>Hyosung GT250R</td>\n",
+       "      <td>2014</td>\n",
+       "      <td>1.35</td>\n",
+       "      <td>3.45</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>10</th>\n",
+       "      <td>alto 800</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>2.85</td>\n",
+       "      <td>3.60</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>152</th>\n",
+       "      <td>Bajaj Pulsar NS 200</td>\n",
+       "      <td>2012</td>\n",
+       "      <td>0.50</td>\n",
+       "      <td>0.99</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>77</th>\n",
+       "      <td>corolla</td>\n",
+       "      <td>2004</td>\n",
+       "      <td>1.50</td>\n",
+       "      <td>12.35</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                Car_Name  Year  Selling_Price  Present_Price\n",
+       "235                verna  2017           9.10           9.40\n",
+       "106       Hyosung GT250R  2014           1.35           3.45\n",
+       "10              alto 800  2017           2.85           3.60\n",
+       "152  Bajaj Pulsar NS 200  2012           0.50           0.99\n",
+       "77               corolla  2004           1.50          12.35"
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "X_train.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "id": "64385405-4d92-4b2e-9795-a89750d2c046",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Car_Name</th>\n",
+       "      <th>Year</th>\n",
+       "      <th>Selling_Price</th>\n",
+       "      <th>Present_Price</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>235</th>\n",
+       "      <td>verna</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>9.10</td>\n",
+       "      <td>9.40</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>106</th>\n",
+       "      <td>Hyosung GT250R</td>\n",
+       "      <td>2014</td>\n",
+       "      <td>1.35</td>\n",
+       "      <td>3.45</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>10</th>\n",
+       "      <td>alto 800</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>2.85</td>\n",
+       "      <td>3.60</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>152</th>\n",
+       "      <td>Bajaj Pulsar NS 200</td>\n",
+       "      <td>2012</td>\n",
+       "      <td>0.50</td>\n",
+       "      <td>0.99</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>77</th>\n",
+       "      <td>corolla</td>\n",
+       "      <td>2004</td>\n",
+       "      <td>1.50</td>\n",
+       "      <td>12.35</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                Car_Name  Year  Selling_Price  Present_Price\n",
+       "235                verna  2017           9.10           9.40\n",
+       "106       Hyosung GT250R  2014           1.35           3.45\n",
+       "10              alto 800  2017           2.85           3.60\n",
+       "152  Bajaj Pulsar NS 200  2012           0.50           0.99\n",
+       "77               corolla  2004           1.50          12.35"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "X_train.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "2ed1fea5-3959-4605-80f6-b51ed21b17f2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.preprocessing import OneHotEncoder"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "id": "6be59975-6e44-49d3-b597-bbf65ffcd7bc",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ohe =  OneHotEncoder()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "id": "1331f45c-5225-484c-89ec-a808b67380c0",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[0., 0., 0., ..., 0., 0., 0.],\n",
+       "       [0., 0., 0., ..., 0., 0., 0.],\n",
+       "       [0., 0., 0., ..., 0., 0., 0.],\n",
+       "       ...,\n",
+       "       [0., 0., 0., ..., 0., 0., 0.],\n",
+       "       [0., 0., 0., ..., 0., 0., 0.],\n",
+       "       [0., 0., 0., ..., 0., 0., 0.]])"
+      ]
+     },
+     "execution_count": 45,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "ohe.fit_transform(X_train[['Car_Name','Selling_Price']]).toarray()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "id": "899e7dad-fb00-423f-b042-07b4a62a9945",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Index(['Car_Name', 'Year', 'Selling_Price', 'Present_Price'], dtype='object')\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(X_train.columns)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "id": "b32e1558-5b3d-4674-95e8-33559599afd2",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "                Car_Name  Year  Selling_Price  Present_Price\n",
+      "235                verna  2017           9.10           9.40\n",
+      "106       Hyosung GT250R  2014           1.35           3.45\n",
+      "10              alto 800  2017           2.85           3.60\n",
+      "152  Bajaj Pulsar NS 200  2012           0.50           0.99\n",
+      "77               corolla  2004           1.50          12.35\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(X_train.head())\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "id": "718765b5-a85e-4235-8eea-a7cbefc902d9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.preprocessing import OneHotEncoder\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "id": "9fb0d9e3-92b3-451f-b98c-ecca89b6e27b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ohe = OneHotEncoder()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 47,
+   "id": "f052c655-43e9-4c4f-90b9-6a8559889a2b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "X_train_new = ohe.fit_transform(X_train[['Car_Name','Selling_Price']]).toarray()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "id": "b2f0e2b9-a596-4c2b-89ed-0c0d90d037a6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "X_test_new = ohe.fit_transform(X_train[['Car_Name','Selling_Price']]).toarray()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "id": "4990b7e7-7eca-4ab2-9592-5462440c8d82",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[0., 0., 0., ..., 0., 0., 0.],\n",
+       "       [0., 0., 0., ..., 0., 0., 0.],\n",
+       "       [0., 0., 0., ..., 0., 0., 0.],\n",
+       "       ...,\n",
+       "       [0., 0., 0., ..., 0., 0., 0.],\n",
+       "       [0., 0., 0., ..., 0., 0., 0.],\n",
+       "       [0., 0., 0., ..., 0., 0., 0.]])"
+      ]
+     },
+     "execution_count": 51,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "X_train_new"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 57,
+   "id": "4be67d05-24b5-4c5b-9853-faa53ad2cbfc",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[ 9.4 ,  9.1 ,  0.  , ...,  0.  ,  0.  ,  0.  ],\n",
+       "       [ 3.45,  1.35,  0.  , ...,  0.  ,  0.  ,  0.  ],\n",
+       "       [ 3.6 ,  2.85,  0.  , ...,  0.  ,  0.  ,  0.  ],\n",
+       "       ...,\n",
+       "       [18.61,  7.45,  0.  , ...,  0.  ,  0.  ,  0.  ],\n",
+       "       [10.79,  7.75,  0.  , ...,  0.  ,  0.  ,  0.  ],\n",
+       "       [ 0.73,  0.42,  0.  , ...,  0.  ,  0.  ,  0.  ]])"
+      ]
+     },
+     "execution_count": 57,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "np.hstack((X_train[['Present_Price','Selling_Price']].values,X_train_new))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 59,
+   "id": "06626001-39dd-499b-b563-c342b89d1ca2",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(240, 222)"
+      ]
+     },
+     "execution_count": 59,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "np.hstack((X_train[['Present_Price','Selling_Price']].values,X_train_new)).shape"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f08c106e-8cca-49a3-9060-00b01604cae8",
+   "metadata": {},
+   "source": [
+    "\n",
+    "4. OneHotEncoding with Top Categories"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 77,
+   "id": "575abaaf-1d46-4f38-a138-db5c0d773278",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "counts = df['Car_Name'].value_counts()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 71,
+   "id": "0968be49-19da-4a74-aef3-3680b183e13f",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Car_Name\n",
+       "city                        26\n",
+       "corolla altis               16\n",
+       "verna                       14\n",
+       "fortuner                    11\n",
+       "brio                        10\n",
+       "                            ..\n",
+       "Honda CB Trigger             1\n",
+       "Yamaha FZ S                  1\n",
+       "Bajaj Pulsar 135 LS          1\n",
+       "Activa 4g                    1\n",
+       "Bajaj Avenger Street 220     1\n",
+       "Name: count, Length: 98, dtype: int64"
+      ]
+     },
+     "execution_count": 71,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['Car_Name'].value_counts()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 73,
+   "id": "18cb85c3-6fa7-412d-9a30-0dbc454d7c2c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df['Car_Name'].nunique()\n",
+    "threshold = 100\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 79,
+   "id": "5ff1187e-ba54-4853-8ee1-85690bb65eda",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "repl = counts[counts <= threshold].index\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 83,
+   "id": "d8b5d7d9-e7d1-4c94-ae7e-d33b114de188",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>uncommon</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>107</th>\n",
+       "      <td>True</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>35</th>\n",
+       "      <td>True</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>200</th>\n",
+       "      <td>True</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>180</th>\n",
+       "      <td>True</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>177</th>\n",
+       "      <td>True</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "     uncommon\n",
+       "107      True\n",
+       "35       True\n",
+       "200      True\n",
+       "180      True\n",
+       "177      True"
+      ]
+     },
+     "execution_count": 83,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pd.get_dummies(df['Car_Name'].replace(repl, 'uncommon')).sample(5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7a6b0754-aa45-474b-9888-541d779b2966",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.5"
+  },
+  "widgets": {
+   "application/vnd.jupyter.widget-state+json": {
+    "state": {},
+    "version_major": 2,
+    "version_minor": 0
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
